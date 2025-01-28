@@ -3,21 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Surpresa </title>
+  <title>Surpresa</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-image: url('https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Imagem inicial */
+      background-image: url('https://images.unsplash.com/photo-1566125882500-87e10f726cdc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
       background-size: cover;
       background-position: center;
       overflow: hidden;
       font-family: Arial, sans-serif;
-      transition: background-image 0.5s ease; /* Transição suave para trocar a imagem */
+      transition: background-image 0.5s ease;
+    }
+
+    #timer {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
     }
 
     #button {
@@ -94,18 +106,41 @@
   </style>
 </head>
 <body>
+  <div id="timer">Carregando...</div>
   <button id="button">Clique em mim</button>
   <div id="message">EU TE AMO!!!</div>
 
   <script>
     const button = document.getElementById('button');
     const message = document.getElementById('message');
+    const timer = document.getElementById('timer');
+
+    function updateTimer() {
+      const targetDate = new Date('2025-02-20T10:30:00'); // Data alvo
+      const now = new Date();
+      const difference = targetDate - now;
+
+      if (difference <= 0) {
+        timer.innerHTML = "O grande momento chegou!";
+        clearInterval(timerInterval);
+        return;
+      }
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      timer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
 
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
-      heart.style.left = Math.random() * 100 + 'vw'; // Posiciona horizontalmente em qualquer lugar
-      heart.style.top = Math.random() * -20 + 'vh'; // Ajusta para aparecer acima da tela
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.top = Math.random() * -20 + 'vh';
       heart.style.animationDuration = Math.random() * 2 + 3 + 's';
       document.body.appendChild(heart);
 
@@ -116,15 +151,13 @@
 
     button.addEventListener('click', () => {
       message.style.display = 'block';
-      button.style.opacity = '0'; // Faz o botão desaparecer suavemente
+      button.style.opacity = '0';
       setTimeout(() => {
-        button.style.display = 'none'; // Remove o botão da tela
-      }, 500); // Aguarda a animação de opacidade
+        button.style.display = 'none';
+      }, 500);
 
-      // Trocar a imagem de fundo
       document.body.style.backgroundImage = "url('https://images.unsplash.com/reserve/Af0sF2OS5S5gatqrKzVP_Silhoutte.jpg?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')";
 
-      // Iniciar a chuva de corações
       setInterval(createHeart, 200);
     });
   </script>
